@@ -19,7 +19,7 @@ export const contact = catchAsyncError(async (req,res,next) => {
 
     await sendEmail(to,subject,text);
 
-    req.status(200).json({
+    res.status(200).json({
         success: true,
         message: "Your request has been sent."
     })
@@ -40,7 +40,7 @@ export const courseRequest = catchAsyncError(async (req,res,next) => {
 
     await sendEmail(to,subject,text);
 
-    req.status(200).json({
+    res.status(200).json({
         success: true,
         message: "Your request has been sent"
     })
@@ -57,10 +57,9 @@ export const getDashboardStats = catchAsyncError(async (req,res,next) => {
         statsData.unshift(stats[i]);
     }
 
-    const reqSize = 12 - statsData.length;
+    const reqSize = 12 - stats.length;
 
-    for(let i=0; i<reqSize.length; i++){            // agar ek mahine ka data hai to bache hue 11 mahine ka zero store ho jayega
-
+    for(let i=0; i<reqSize; i++){
         statsData.unshift({
             users: 0,
             subscription: 0,
@@ -126,9 +125,5 @@ export const getDashboardStats = catchAsyncError(async (req,res,next) => {
         viewsProfit,
         subProfit,
     });
-
-    req.status(200).json({
-        success: true,
-    })
 });
 

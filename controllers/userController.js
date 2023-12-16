@@ -205,7 +205,6 @@ export const forgetPassword = catchAsyncError(async(req,res,next)=>{
 });
 
 
-
 //reset password
 export const resetPassword = catchAsyncError(async(req,res,next)=>{
 
@@ -233,7 +232,7 @@ export const resetPassword = catchAsyncError(async(req,res,next)=>{
     res.status(200).json({
         success: true,
         message: "Password updated successfully",
-    })
+    });
 });
 
 
@@ -369,12 +368,17 @@ export const deleteProfile = catchAsyncError(async(req,res,next) =>{
 
     const user = await User.findById(req.user._id);
 
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
     //cancel subscription
 
     await user.remove();
 
     res.status(200).cookie("token",null,{
-        expires: new Date(Date.now())
+        expires: new Date(Date.now()),
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
     }).json({
         success: true,
         message: "Profile deleted successfully"
