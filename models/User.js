@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
+
 const schema = new mongoose.Schema({
     name:{
         type: String,
